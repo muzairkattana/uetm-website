@@ -247,6 +247,80 @@ nav .navigation ul li a:active {
     }
 }
 
+/* ---------------- Introduction Section ---------------- */
+#introduction {
+    padding: 80px 20px;
+    background: #fff;
+    text-align: center;
+}
+
+.intro-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+#introduction h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+#introduction h1::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    border-radius: 2px;
+}
+
+#introduction h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 50px 0 20px 0;
+    text-align: left;
+}
+
+#introduction p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #555;
+    margin-bottom: 30px;
+    text-align: justify;
+    max-width: 100%;
+}
+
+.intro-mission {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+    max-width: 100%;
+}
+
+.intro-mission li {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 15px;
+    padding-left: 25px;
+    position: relative;
+}
+
+.intro-mission li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #3498db;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
 /* ---------------- Features ---------------- */
 #features {
     padding: 80px 20px;
@@ -1108,6 +1182,14 @@ footer p {
     align-items: center;
     justify-content: center;
     font-size: 18px;
+    overflow: hidden;
+}
+
+.chatbot-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .chatbot-info {
