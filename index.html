@@ -38,6 +38,13 @@
   
   <!-- Hero -->
   <section id="home">
+    <!-- Background slideshow layers -->
+    <div class="hero-bg-layer" data-bg="images/slider.jpg"></div>
+    <div class="hero-bg-layer" data-bg="images/slider 1.jpg"></div>
+    <div class="hero-bg-layer" data-bg="images/slider 2.jpg"></div>
+    <div class="hero-bg-layer" data-bg="images/class.jpg"></div>
+    <div class="hero-bg-layer" data-bg="images/lab_5.jpg"></div>
+    
     <h2>University of Engineering & Technology Mardan</h2>
     <p>Empowering future engineers with cutting-edge education, research excellence, and innovative solutions for tomorrow's challenges.</p>
     <div class="btn">
@@ -618,6 +625,20 @@
         $('#chat-input').val(text);
         sendMessage();
       });
+
+      // Close chatbot when clicking outside
+      $(document).on('mousedown', function(event) {
+        const $container = $('#chatbot-container');
+        const $toggle = $('#chatbot-toggle');
+        const isVisible = $container.hasClass('chatbot-visible') && !$container.hasClass('chatbot-hidden');
+        if (!isVisible) return;
+        const $target = $(event.target);
+        if ($target.closest('#chatbot-container').length === 0 && $target.closest('#chatbot-toggle').length === 0) {
+          // Close the chatbot and show the toggle button
+          $container.removeClass('chatbot-visible').addClass('chatbot-hidden');
+          $toggle.show();
+        }
+      });
       
       // Core chatbot functions
       function startVoiceRecognition() {
@@ -779,6 +800,45 @@
       
       // Initialize chatbot
       console.log('🤖 UET Mardan AI Chatbot initialized successfully!');
+      
+      // ============= HERO BACKGROUND SLIDESHOW =============
+      
+      // Hero background slideshow functionality
+      let currentBgIndex = 0;
+      const heroBgLayers = $('.hero-bg-layer');
+      const totalBgImages = heroBgLayers.length;
+      
+      if (totalBgImages > 0) {
+        // Set initial background images
+        heroBgLayers.each(function(index) {
+          const bgImage = $(this).data('bg');
+          $(this).css('background-image', `url('${bgImage}')`);
+        });
+        
+        // Show first image
+        heroBgLayers.eq(0).addClass('active');
+        
+        // Start slideshow if we have multiple images
+        if (totalBgImages > 1) {
+          setInterval(() => {
+            // Fade out current image
+            heroBgLayers.eq(currentBgIndex).removeClass('active').addClass('fade-out');
+            
+            // Move to next image
+            currentBgIndex = (currentBgIndex + 1) % totalBgImages;
+            
+            // Fade in next image
+            setTimeout(() => {
+              heroBgLayers.eq(currentBgIndex).removeClass('fade-out').addClass('active');
+            }, 100);
+            
+            // Clean up fade-out class after transition
+            setTimeout(() => {
+              heroBgLayers.removeClass('fade-out');
+            }, 1500);
+          }, 5000); // Change image every 5 seconds
+        }
+      }
       
     });
 </script>

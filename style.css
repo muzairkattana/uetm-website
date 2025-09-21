@@ -97,7 +97,6 @@ nav .navigation ul li a:active {
 }
 /* ---------------- Hero Section ---------------- */
 #home {
-    background-image: linear-gradient(135deg, rgba(52, 152, 219, 0.8), rgba(44, 62, 80, 0.8)), url("images/slider.jpg");
     width: 100%;
     height: 100vh;
     background-size: cover;
@@ -110,8 +109,10 @@ nav .navigation ul li a:active {
     text-align: center;
     padding: 100px 20px 40px;
     position: relative;
+    overflow: hidden;
 }
 
+/* Hero background slideshow */
 #home::before {
     content: '';
     position: absolute;
@@ -119,13 +120,52 @@ nav .navigation ul li a:active {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.1);
+    background-image: url('images/slider.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    opacity: 1;
+    z-index: 0;
+    transition: opacity 1.5s ease-in-out;
+}
+
+#home::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.8), rgba(44, 62, 80, 0.8));
     z-index: 1;
+}
+
+/* Additional background layers for slideshow effect */
+.hero-bg-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    opacity: 0;
+    z-index: 0;
+    transition: opacity 1.5s ease-in-out;
+}
+
+.hero-bg-layer.active {
+    opacity: 1;
+}
+
+.hero-bg-layer.fade-out {
+    opacity: 0;
 }
 
 #home > * {
     position: relative;
-    z-index: 2;
+    z-index: 3;
 }
 
 #home h2 {
@@ -677,8 +717,8 @@ footer p {
 /* ---------------- Scroll To Top Button ---------------- */
 #scrollTopBtn {
     position: fixed;
-    right: 24px;
-    bottom: 24px;
+    right: 20px;
+    bottom: 90px;
     width: 56px;
     height: 56px;
     border-radius: 50%;
@@ -692,11 +732,14 @@ footer p {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 1100;
+    z-index: 1050;
     opacity: 0;
     visibility: hidden;
     transform: translateY(20px) scale(0.95);
     transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+    /* Safe area support for modern devices */
+    right: calc(20px + env(safe-area-inset-right));
+    bottom: calc(90px + env(safe-area-inset-bottom));
 }
 
 #scrollTopBtn.show {
@@ -732,16 +775,6 @@ footer p {
     filter: blur(0.2px);
 }
 
-@media (max-width: 480px) {
-    #scrollTopBtn {
-        right: 16px;
-        bottom: 16px;
-        width: 48px;
-        height: 48px;
-    }
-    #scrollTopBtn i { font-size: 18px; }
-}
-
 @media (prefers-reduced-motion: reduce) {
     #scrollTopBtn { transition: none; }
 }
@@ -749,28 +782,53 @@ footer p {
 /* ---------------- AI Chatbot Styling ---------------- */
 #chatbot-toggle {
     position: fixed;
-    right: 24px;
-    bottom: 100px;
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, #3498db, #2980b9);
+    right: 20px;
+    bottom: 20px;
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(52, 152, 219, 0.3);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 1200;
-    box-shadow: 0 10px 30px rgba(52, 152, 219, 0.4);
-    transition: all 0.3s ease;
-    position: relative;
-    animation: chatbotPulse 2s ease-in-out infinite;
+    box-shadow: 0 12px 32px rgba(52, 152, 219, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: chatbotPulse 3s ease-in-out infinite;
+    /* Safe area support */
+    right: calc(20px + env(safe-area-inset-right));
+    bottom: calc(20px + env(safe-area-inset-bottom));
 }
 
 #chatbot-toggle:hover {
-    transform: scale(1.1);
-    box-shadow: 0 15px 40px rgba(52, 152, 219, 0.6);
+    transform: scale(1.08);
+    box-shadow: 0 16px 40px rgba(52, 152, 219, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    border-color: rgba(52, 152, 219, 0.5);
 }
 
+#chatbot-toggle:active {
+    transform: scale(1.02);
+    transition: transform 0.1s ease;
+}
+
+/* Custom SVG Bot Icon */
+#chatbot-toggle .bot-icon {
+    position: relative;
+    z-index: 2;
+    filter: drop-shadow(0 2px 4px rgba(52, 152, 219, 0.2));
+    transition: all 0.3s ease;
+}
+
+#chatbot-toggle:hover .bot-icon {
+    transform: scale(1.05);
+    filter: drop-shadow(0 3px 6px rgba(52, 152, 219, 0.3));
+}
+
+/* Ensure proper icon display */
 #chatbot-toggle i {
     font-size: 26px;
     color: white;
@@ -801,10 +859,10 @@ footer p {
 /* Chatbot Container */
 #chatbot-container {
     position: fixed;
-    right: 24px;
-    bottom: 100px;
-    width: 380px;
-    height: 550px;
+    right: 20px;
+    bottom: 20px;
+    width: 385px;
+    height: 560px;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -819,6 +877,9 @@ footer p {
     opacity: 0;
     visibility: hidden;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* Safe area support */
+    right: calc(20px + env(safe-area-inset-right));
+    bottom: calc(20px + env(safe-area-inset-bottom));
 }
 
 #chatbot-container.chatbot-visible {
@@ -1230,7 +1291,7 @@ footer p {
 @media (max-width: 768px) {
     #chatbot-toggle {
         right: 16px;
-        bottom: 90px;
+        bottom: 20px;
         width: 56px;
         height: 56px;
     }
@@ -1241,7 +1302,7 @@ footer p {
     
     #chatbot-container {
         right: 16px;
-        bottom: 90px;
+        bottom: 20px;
         width: calc(100vw - 32px);
         max-width: 360px;
         height: 500px;
@@ -1265,7 +1326,7 @@ footer p {
     #chatbot-container {
         width: calc(100vw - 16px);
         right: 8px;
-        bottom: 80px;
+        bottom: 16px;
         height: 450px;
     }
     
