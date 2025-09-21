@@ -76,13 +76,6 @@
     <div class="hero-bg-layer" data-bg="images/class.jpg"></div>
     <div class="hero-bg-layer" data-bg="images/lab_5.jpg"></div>
 
-    <!-- Slideshow navigation -->
-    <button class="hero-nav hero-prev" id="hero-prev" aria-label="Previous slide" title="Previous">
-      <i class="fas fa-chevron-left" aria-hidden="true"></i>
-    </button>
-    <button class="hero-nav hero-next" id="hero-next" aria-label="Next slide" title="Next">
-      <i class="fas fa-chevron-right" aria-hidden="true"></i>
-    </button>
     
     <h2>University of Engineering & Technology Mardan</h2>
     <p>Empowering future engineers with cutting-edge education, research excellence, and innovative solutions for tomorrow's challenges.</p>
@@ -1116,15 +1109,6 @@
           startSlideshow();
         }
 
-        // Manual controls
-        $('#hero-next').on('click', function() {
-          nextSlide();
-          startSlideshow(); // restart timer to give equal time after manual action
-        });
-        $('#hero-prev').on('click', function() {
-          prevSlide();
-          startSlideshow();
-        });
       }
       
       // ============= PAGES OVERLAY FUNCTIONALITY =============
