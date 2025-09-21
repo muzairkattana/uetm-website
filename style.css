@@ -7,6 +7,40 @@
 body {
     font-family: 'Poppins', sans-serif;
 }
+
+/* ---------------- Global Scrollbar Styling ---------------- */
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #0C2975 #f1f1f1;
+}
+
+/* WebKit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #0C2975, #163D9D);
+    border-radius: 6px;
+    border: 2px solid #f1f1f1;
+    transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #163D9D, #1e4ba6);
+    border-color: #e1e1e1;
+}
+
+::-webkit-scrollbar-corner {
+    background: #f1f1f1;
+}
 h1 {
     font-size: 2.5rem;
     font-weight: 700;
@@ -25,20 +59,19 @@ nav {
     position: fixed;
     top: 0;
     width: 100%;
-    background: rgba(255, 255, 255, 0.98); /* Increased opacity for better visibility */
-    backdrop-filter: blur(8px); /* Reduced blur for clearer background view */
+    background: #0C2975; /* University brand color */
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 15px 30px;
-    box-shadow: 0 2px 20px rgba(0,0,0,0.12);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.25);
     z-index: 1000;
     transition: all 0.3s ease;
 }
 
 nav.scrolled {
-    background: rgba(255, 255, 255, 0.99); /* Even more opaque when scrolled */
-    box-shadow: 0 2px 30px rgba(0,0,0,0.18);
+    background: #0C2975;
+    box-shadow: 0 2px 30px rgba(0,0,0,0.3);
     padding: 10px 30px;
 }
 
@@ -57,14 +90,14 @@ nav img:hover {
     background: none;
     border: none;
     font-size: 24px;
-    color: #2c3e50;
+    color: #fff;
     cursor: pointer;
     display: none;
     transition: all 0.3s ease;
 }
 
 #menu-btn:hover, #menu-close:hover {
-    color: #3498db;
+    color: #e0e7ff;
     transform: scale(1.1);
 }
 
@@ -77,7 +110,7 @@ nav .navigation ul {
 
 nav .navigation ul li a {
     text-decoration: none;
-    color: #2c3e50;
+    color: #ffffff;
     font-size: 16px;
     font-weight: 500;
     padding: 8px 16px;
@@ -87,8 +120,8 @@ nav .navigation ul li a {
 }
 
 nav .navigation ul li a:hover {
-    color: #3498db;
-    background: rgba(52, 152, 219, 0.1);
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.15);
     transform: translateY(-2px);
 }
 
@@ -112,22 +145,7 @@ nav .navigation ul li a:active {
     overflow: hidden;
 }
 
-/* Hero background slideshow */
-#home::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('images/slider.jpg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    opacity: 1;
-    z-index: 0;
-    transition: opacity 1.5s ease-in-out;
-}
+/* Hero background slideshow - removed static background, now handled by dynamic layers */
 
 #home::after {
     content: '';
@@ -152,8 +170,9 @@ nav .navigation ul li a:active {
     background-position: center;
     background-attachment: fixed;
     opacity: 0;
-    z-index: 0;
+    z-index: 0; /* keep below overlay */
     transition: opacity 1.5s ease-in-out;
+    pointer-events: none; /* don't block interactions */
 }
 
 .hero-bg-layer.active {
@@ -164,7 +183,7 @@ nav .navigation ul li a:active {
     opacity: 0;
 }
 
-#home > * {
+#home > :not(.hero-bg-layer) {
     position: relative;
     z-index: 3;
 }
@@ -719,8 +738,8 @@ footer p {
 /* ---------------- Scroll To Top Button ---------------- */
 #scrollTopBtn {
     position: fixed;
-    right: 20px;
-    bottom: 90px;
+    left: 20px;
+    bottom: 20px;
     width: 56px;
     height: 56px;
     border-radius: 50%;
@@ -740,8 +759,8 @@ footer p {
     transform: translateY(20px) scale(0.95);
     transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
     /* Safe area support for modern devices */
-    right: calc(20px + env(safe-area-inset-right));
-    bottom: calc(90px + env(safe-area-inset-bottom));
+    left: calc(20px + env(safe-area-inset-left));
+    bottom: calc(20px + env(safe-area-inset-bottom));
 }
 
 #scrollTopBtn.show {
@@ -1055,17 +1074,17 @@ footer p {
     bottom: 20px;
     width: 64px;
     height: 64px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+    background: linear-gradient(135deg, #0C2975, #163D9D);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(52, 152, 219, 0.3);
+    border: 1px solid rgba(12, 41, 117, 0.3);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 1200;
-    box-shadow: 0 12px 32px rgba(52, 152, 219, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    box-shadow: 0 12px 32px rgba(12, 41, 117, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     animation: chatbotPulse 3s ease-in-out infinite;
     /* Safe area support */
@@ -1075,8 +1094,8 @@ footer p {
 
 #chatbot-toggle:hover {
     transform: scale(1.08);
-    box-shadow: 0 16px 40px rgba(52, 152, 219, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.6);
-    border-color: rgba(52, 152, 219, 0.5);
+    box-shadow: 0 16px 40px rgba(12, 41, 117, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    border-color: rgba(12, 41, 117, 0.5);
 }
 
 #chatbot-toggle:active {
@@ -1111,7 +1130,7 @@ footer p {
     right: -8px;
     bottom: -8px;
     border-radius: 50%;
-    border: 3px solid rgba(52, 152, 219, 0.6);
+    border: 3px solid rgba(12, 41, 117, 0.6);
     animation: chatPulse 2s ease-in-out infinite;
 }
 
@@ -1168,7 +1187,7 @@ footer p {
 
 /* Chatbot Header */
 .chatbot-header {
-    background: linear-gradient(135deg, #3498db, #2980b9);
+    background: linear-gradient(135deg, #0C2975, #163D9D);
     color: white;
     padding: 16px 20px;
     display: flex;
@@ -1298,7 +1317,7 @@ footer p {
 }
 
 .chat-messages::-webkit-scrollbar-thumb {
-    background: rgba(52, 152, 219, 0.3);
+    background: rgba(12, 41, 117, 0.35);
     border-radius: 2px;
 }
 
@@ -1332,7 +1351,7 @@ footer p {
 }
 
 .bot-message .message-avatar {
-    background: linear-gradient(135deg, #3498db, #2980b9);
+    background: linear-gradient(135deg, #0C2975, #163D9D);
     color: white;
 }
 
@@ -1355,7 +1374,7 @@ footer p {
     border-radius: 18px;
     max-width: 280px;
     word-wrap: break-word;
-    border: 1px solid rgba(52, 152, 219, 0.1);
+    border: 1px solid rgba(12, 41, 117, 0.12);
 }
 
 .user-message .message-content {
@@ -1379,9 +1398,9 @@ footer p {
 }
 
 .suggestion-btn {
-    background: rgba(52, 152, 219, 0.1);
-    border: 1px solid rgba(52, 152, 219, 0.3);
-    color: #3498db;
+    background: rgba(12, 41, 117, 0.08);
+    border: 1px solid rgba(12, 41, 117, 0.3);
+    color: #0C2975;
     padding: 6px 12px;
     border-radius: 20px;
     font-size: 12px;
@@ -1391,7 +1410,7 @@ footer p {
 }
 
 .suggestion-btn:hover {
-    background: #3498db;
+    background: #0C2975;
     color: white;
     transform: translateY(-2px);
 }
@@ -1414,7 +1433,7 @@ footer p {
 .typing-dots span {
     width: 6px;
     height: 6px;
-    background: #3498db;
+    background: #0C2975;
     border-radius: 50%;
     animation: typingDots 1.4s ease-in-out infinite;
 }
@@ -1503,8 +1522,8 @@ footer p {
 }
 
 #chat-input:focus {
-    border-color: #3498db;
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    border-color: #0C2975;
+    box-shadow: 0 0 0 3px rgba(12, 41, 117, 0.12);
 }
 
 .voice-input-btn, .send-btn {
@@ -1545,12 +1564,12 @@ footer p {
 }
 
 .send-btn {
-    background: linear-gradient(135deg, #3498db, #2980b9);
+    background: linear-gradient(135deg, #0C2975, #163D9D);
     color: white;
 }
 
 .send-btn:hover {
-    background: linear-gradient(135deg, #2980b9, #3498db);
+    background: linear-gradient(135deg, #163D9D, #0C2975);
     transform: scale(1.1);
 }
 
@@ -2280,6 +2299,21 @@ details[open] summary::before {
         top: 20px;
         right: 20px;
         display: block;
+    }
+
+    /* Mobile menu colors for contrast on white panel */
+    nav .navigation ul li a {
+        color: #0C2975;
+    }
+    nav .navigation ul li a:hover {
+        color: #0C2975;
+        background: rgba(12, 41, 117, 0.08);
+    }
+    #menu-btn {
+        color: #ffffff;
+    }
+    nav .navigation ul button {
+        color: #0C2975;
     }
 
     /* Hero Section */
