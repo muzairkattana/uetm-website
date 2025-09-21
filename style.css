@@ -969,35 +969,85 @@ footer p {
     to { opacity: 1; }
 }
 
-/* ---------------- Footer Map ---------------- */
+/* ---------------- Footer Map (Unique Floating Design) ---------------- */
 .footer-map-col {
     position: relative;
-    /* Move the entire column further right and remove top space */
-    margin-left: 35px; /* Push it significantly further to the right */
-    margin-top: -25px; /* Remove more space from top and move up */
-    padding-left: 25px; /* More right spacing */
-    padding-top: 0; /* Remove any top padding */
+    /* Create a unique floating container */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .footer-map-container {
     position: relative;
-    width: 100%;
-    height: 185px; /* Slightly reduced height for better proportion */
-    border-radius: 12px;
+    width: 320px; /* Fixed width for perfect proportions */
+    height: 200px; /* Perfect height */
+    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-    border: 2px solid rgba(52, 152, 219, 0.3);
-    margin: 0 0 10px 0; /* Completely removed top margin, reduced bottom */
-    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-    transition: all 0.3s ease;
-    /* Enhanced positioning to move further right and remove top space */
-    transform: translateX(15px) translateY(-10px); /* More significant positioning adjustments */
+    
+    /* Unique floating design with multiple layers */
+    background: linear-gradient(145deg, #ffffff, #f0f8ff);
+    box-shadow: 
+        0 20px 40px rgba(52, 152, 219, 0.15),
+        0 10px 20px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    
+    border: 3px solid transparent;
+    background-clip: padding-box;
+    
+    /* Perfect center positioning with subtle float effect */
+    margin: 20px auto;
+    transform: translateY(-5px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Unique glow effect */
+    position: relative;
+}
+
+/* Create a glowing border effect */
+.footer-map-container::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    padding: 3px;
+    background: linear-gradient(45deg, #3498db, #e74c3c, #f39c12, #27ae60, #9b59b6, #3498db);
+    background-size: 200% 200%;
+    border-radius: 23px;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: xor;
+    animation: borderRotate 3s linear infinite;
+    z-index: -1;
+}
+
+/* Floating animation for the container */
+@keyframes borderRotate {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Add subtle floating animation */
+@keyframes mapFloat {
+    0%, 100% { transform: translateY(-5px); }
+    50% { transform: translateY(-15px); }
+}
+
+.footer-map-container {
+    animation: mapFloat 4s ease-in-out infinite;
 }
 
 .footer-map-container:hover {
-    box-shadow: 0 12px 25px rgba(52, 152, 219, 0.25);
-    border-color: rgba(52, 152, 219, 0.4);
-    transform: translateY(-2px);
+    /* Enhanced hover effects for the unique design */
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 
+        0 30px 60px rgba(52, 152, 219, 0.25),
+        0 15px 30px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 1);
+    
+    /* Stop the floating animation on hover */
+    animation-play-state: paused;
 }
 
 .footer-map-container iframe {
@@ -1007,36 +1057,65 @@ footer p {
     width: 100%;
     height: 100%;
     border: 0;
-    filter: grayscale(0.2) contrast(1.1);
-    transition: filter 0.3s ease;
+    border-radius: 17px; /* Match container radius */
+    filter: grayscale(0.1) contrast(1.05) saturate(1.1);
+    transition: all 0.4s ease;
 }
 
 .footer-map-container:hover iframe {
-    filter: grayscale(0) contrast(1);
+    filter: grayscale(0) contrast(1) saturate(1.2) brightness(1.05);
+    transform: scale(1.01);
 }
 
 .footer-map-link {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    color: #3498db;
+    justify-content: center;
+    gap: 10px;
+    color: #fff;
     text-decoration: none;
     font-size: 0.9rem;
-    font-weight: 500;
-    padding: 8px 12px;
-    background: rgba(52, 152, 219, 0.08);
-    border: 1px solid rgba(52, 152, 219, 0.2);
-    border-radius: 20px;
-    transition: all 0.3s ease;
-    margin-top: 10px;
+    font-weight: 600;
+    padding: 12px 24px;
+    
+    /* Unique button design matching the map container */
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 25px;
+    box-shadow: 
+        0 8px 16px rgba(52, 152, 219, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin: 15px auto 0;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Add a subtle shine effect */
+.footer-map-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.footer-map-link:hover::before {
+    left: 100%;
 }
 
 .footer-map-link:hover {
-    background: #3498db;
-    color: white;
-    border-color: #3498db;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+    background: linear-gradient(135deg, #2980b9, #3498db);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 
+        0 12px 24px rgba(52, 152, 219, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .footer-map-link i {
@@ -1632,6 +1711,187 @@ footer p {
     }
 }
 
+/* ---------------- Campus Location Section ---------------- */
+#campus-location {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+#campus-location::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1" fill="%23004e92" opacity="0.1"/><circle cx="80" cy="80" r="1" fill="%23004e92" opacity="0.1"/><circle cx="40" cy="60" r="1" fill="%23004e92" opacity="0.1"/><circle cx="70" cy="30" r="1" fill="%23004e92" opacity="0.1"/></svg>') repeat;
+    pointer-events: none;
+}
+
+.location-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+    position: relative;
+    z-index: 1;
+}
+
+.location-info h1 {
+    font-size: 2.5rem;
+    color: #004e92;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    text-align: left;
+}
+
+.location-info > p {
+    font-size: 1.1rem;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.location-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.location-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 78, 146, 0.1);
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+}
+
+.location-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 78, 146, 0.15);
+    border-color: #004e92;
+}
+
+.location-item i {
+    font-size: 1.5rem;
+    color: #004e92;
+    background: linear-gradient(135deg, #6dd5fa, #2980b9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-top: 0.2rem;
+}
+
+.location-item div h3 {
+    font-size: 1.2rem;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.location-item div p {
+    color: #666;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.map-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 78, 146, 0.1);
+    border: 1px solid #e9ecef;
+}
+
+.map-section h2 {
+    font-size: 1.8rem;
+    color: #004e92;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+#campus-location .footer-map-container {
+    width: 100%;
+    height: 300px;
+    border-radius: 15px;
+    overflow: hidden;
+    border: 3px solid #004e92;
+    position: relative;
+    background: #f8f9fa;
+    box-shadow: 0 10px 25px rgba(0, 78, 146, 0.15);
+    margin-bottom: 1.5rem;
+    animation: none;
+}
+
+#campus-location .footer-map-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+#campus-location .footer-map-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(0, 78, 146, 0.2);
+}
+
+.map-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#campus-location .footer-map-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    background: linear-gradient(135deg, #004e92, #2980b9);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 12px 20px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 78, 146, 0.3);
+    margin: 0;
+}
+
+#campus-location .footer-map-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 78, 146, 0.4);
+    background: linear-gradient(135deg, #2980b9, #3498db);
+}
+
+#campus-location .footer-map-link.directions-btn {
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+    box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+}
+
+#campus-location .footer-map-link.directions-btn:hover {
+    background: linear-gradient(135deg, #2ecc71, #58d68d);
+    box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+}
+
+#campus-location .footer-map-link i {
+    font-size: 0.9rem;
+    color: white;
+    background: none;
+    -webkit-text-fill-color: white;
+}
+
 /* ---------------- Responsive Design ---------------- */
 
 /* Large tablets and small desktops */
@@ -1767,6 +2027,39 @@ footer p {
     .footer-map-link {
         font-size: 0.85rem;
         padding: 6px 10px;
+    }
+    
+    /* Campus Location Section - Mobile */
+    .location-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 0 1rem;
+    }
+    
+    .location-info h1 {
+        font-size: 2rem;
+        text-align: center;
+    }
+    
+    .location-item {
+        padding: 1rem;
+    }
+    
+    .map-section {
+        padding: 1.5rem;
+    }
+    
+    .footer-map-container {
+        height: 250px;
+    }
+    
+    .map-actions {
+        flex-direction: column;
+    }
+    
+    .footer-map-link {
+        justify-content: center;
+        text-align: center;
     }
 }
 
