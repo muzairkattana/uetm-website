@@ -70,9 +70,19 @@
   <!-- Hero -->
   <section id="home">
     <!-- Background slideshow layers -->
-    <div class="hero-bg-layer" data-bg="images/lab_5.jpg"></div>
+    <div class="hero-bg-layer" data-bg="images/slider.jpg"></div>
+    <div class="hero-bg-layer" data-bg="images/slider 2.jpg"></div>
     <div class="hero-bg-layer" data-bg="images/computerscience.jpeg"></div>
     <div class="hero-bg-layer" data-bg="images/class.jpg"></div>
+    <div class="hero-bg-layer" data-bg="images/lab_5.jpg"></div>
+
+    <!-- Slideshow navigation -->
+    <button class="hero-nav hero-prev" id="hero-prev" aria-label="Previous slide" title="Previous">
+      <i class="fas fa-chevron-left" aria-hidden="true"></i>
+    </button>
+    <button class="hero-nav hero-next" id="hero-next" aria-label="Next slide" title="Next">
+      <i class="fas fa-chevron-right" aria-hidden="true"></i>
+    </button>
     
     <h2>University of Engineering & Technology Mardan</h2>
     <p>Empowering future engineers with cutting-edge education, research excellence, and innovative solutions for tomorrow's challenges.</p>
@@ -1046,41 +1056,75 @@
       
       // ============= HERO BACKGROUND SLIDESHOW =============
       
-      // Hero background slideshow functionality
+      // Hero background slideshow with manual controls
       let currentBgIndex = 0;
       const heroBgLayers = $('.hero-bg-layer');
       const totalBgImages = heroBgLayers.length;
-      
-      if (totalBgImages > 0) {
-        // Set initial background images
-        heroBgLayers.each(function(index) {
+      const SLIDE_INTERVAL_MS = 5000; // equal time per image
+      let slideTimer = null;
+
+      function setBackgroundImages() {
+        heroBgLayers.each(function() {
           const bgImage = $(this).data('bg');
           $(this).css('background-image', `url('${bgImage}')`);
         });
-        
-        // Show first image
-        heroBgLayers.eq(0).addClass('active');
-        
-        // Start slideshow if we have multiple images
-        if (totalBgImages > 1) {
-          setInterval(() => {
-            // Fade out current image
-            heroBgLayers.eq(currentBgIndex).removeClass('active').addClass('fade-out');
-            
-            // Move to next image
-            currentBgIndex = (currentBgIndex + 1) % totalBgImages;
-            
-            // Fade in next image
-            setTimeout(() => {
-              heroBgLayers.eq(currentBgIndex).removeClass('fade-out').addClass('active');
-            }, 100);
-            
-            // Clean up fade-out class after transition
-            setTimeout(() => {
-              heroBgLayers.removeClass('fade-out');
-            }, 1500);
-          }, 5000); // Change image every 5 seconds
+      }
+
+      function showSlide(newIndex) {
+        if (newIndex === currentBgIndex) return;
+        // Fade out current image
+        heroBgLayers.eq(currentBgIndex).removeClass('active').addClass('fade-out');
+        // Wrap new index
+        currentBgIndex = (newIndex + totalBgImages) % totalBgImages;
+        // Fade in next image
+        setTimeout(() => {
+          heroBgLayers.eq(currentBgIndex).removeClass('fade-out').addClass('active');
+        }, 80);
+        // Clean up
+        setTimeout(() => {
+          heroBgLayers.removeClass('fade-out');
+        }, 1500);
+      }
+
+      function nextSlide() {
+        showSlide(currentBgIndex + 1);
+      }
+
+      function prevSlide() {
+        showSlide(currentBgIndex - 1);
+      }
+
+      function startSlideshow() {
+        stopSlideshow();
+        slideTimer = setInterval(nextSlide, SLIDE_INTERVAL_MS);
+      }
+
+      function stopSlideshow() {
+        if (slideTimer) {
+          clearInterval(slideTimer);
+          slideTimer = null;
         }
+      }
+
+      if (totalBgImages > 0) {
+        setBackgroundImages();
+        // Show first image (default stays as slider.jpg)
+        heroBgLayers.eq(0).addClass('active');
+
+        // Start autoplay if multiple images
+        if (totalBgImages > 1) {
+          startSlideshow();
+        }
+
+        // Manual controls
+        $('#hero-next').on('click', function() {
+          nextSlide();
+          startSlideshow(); // restart timer to give equal time after manual action
+        });
+        $('#hero-prev').on('click', function() {
+          prevSlide();
+          startSlideshow();
+        });
       }
       
       // ============= PAGES OVERLAY FUNCTIONALITY =============

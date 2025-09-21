@@ -140,7 +140,7 @@ nav .navigation ul li a:active {
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 100px 20px 40px;
+    padding: 100px 0 40px;
     position: relative;
     overflow: hidden;
 }
@@ -186,6 +186,56 @@ nav .navigation ul li a:active {
 #home > :not(.hero-bg-layer) {
     position: relative;
     z-index: 3;
+}
+
+/* Hero slideshow navigation arrows */
+.hero-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    font-size: 22px;
+    z-index: 10;
+    transition: all 0.3s ease;
+    opacity: 0.8;
+    user-select: none;
+    outline: none;
+}
+
+.hero-nav:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-50%) scale(1.1);
+    opacity: 1;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.hero-nav:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.hero-nav:focus {
+    outline: 2px solid rgba(255, 255, 255, 0.5);
+    outline-offset: 2px;
+}
+
+.hero-prev {
+    left: 0;
+}
+
+.hero-next {
+    right: 0;
 }
 
 #home h2 {
@@ -2319,7 +2369,7 @@ details[open] summary::before {
     /* Hero Section */
     #home {
         background-attachment: scroll;
-        padding: 140px 20px 80px;
+        padding: 140px 0 80px;
     }
     
     #home h2 {
@@ -2338,6 +2388,21 @@ details[open] summary::before {
     #home a {
         width: 250px;
         text-align: center;
+    }
+    
+    /* Hero navigation arrows - responsive */
+    .hero-nav {
+        width: 50px;
+        height: 50px;
+        font-size: 18px;
+    }
+    
+    .hero-prev {
+        left: 0;
+    }
+    
+    .hero-next {
+        right: 0;
     }
 
     /* Features */
@@ -2488,7 +2553,7 @@ details[open] summary::before {
 
     /* Hero Section */
     #home {
-        padding: 120px 15px 60px;
+        padding: 120px 0 60px;
     }
     
     #home h2 {
@@ -2498,6 +2563,21 @@ details[open] summary::before {
     
     #home p {
         font-size: 1rem;
+    }
+    
+    /* Hero navigation arrows - mobile */
+    .hero-nav {
+        width: 45px;
+        height: 45px;
+        font-size: 16px;
+    }
+    
+    .hero-prev {
+        left: 0;
+    }
+    
+    .hero-next {
+        right: 0;
     }
 
     /* Features */
