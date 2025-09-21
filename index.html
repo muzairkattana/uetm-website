@@ -247,6 +247,108 @@
       </div>
     </div>
 </footer>
+  <button id="scrollTopBtn" aria-label="Back to top" title="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <!-- Smart AI Chatbot -->
+  <div id="chatbot-toggle" aria-label="Open AI Assistant" title="UET Mardan AI Assistant">
+    <svg class="bot-icon" width="28" height="28" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="botGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#6dd5fa"/>
+          <stop offset="100%" stop-color="#2980b9"/>
+        </linearGradient>
+        <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#8fd3f4"/>
+          <stop offset="100%" stop-color="#84fab0"/>
+        </linearGradient>
+      </defs>
+      <circle cx="24" cy="24" r="22" fill="none" stroke="url(#ringGrad)" stroke-width="2" opacity="0.6"/>
+      <rect x="12" y="14" width="24" height="20" rx="8" fill="url(#botGrad)"/>
+      <circle cx="20" cy="24" r="2.5" fill="#ffffff"/>
+      <circle cx="28" cy="24" r="2.5" fill="#ffffff"/>
+      <path d="M18 28c2.5 3 9.5 3 12 0" stroke="#ffffff" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <line x1="24" y1="10" x2="24" y2="14" stroke="url(#botGrad)" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="24" cy="8" r="2" fill="url(#botGrad)"/>
+    </svg>
+    <div class="chat-pulse"></div>
+  </div>
+
+  <div id="chatbot-container" class="chatbot-hidden">
+    <div class="chatbot-header">
+      <div class="chatbot-avatar">
+        <i class="fas fa-robot"></i>
+      </div>
+      <div class="chatbot-info">
+        <h4>UET Assistant</h4>
+        <span class="status online">Online</span>
+      </div>
+      <div class="chatbot-actions">
+        <button id="voice-toggle" title="Voice Chat" class="voice-btn">
+          <i class="fas fa-microphone"></i>
+        </button>
+        <button id="call-btn" title="Request Call" class="call-btn">
+          <i class="fas fa-phone"></i>
+        </button>
+        <button id="chatbot-minimize" title="Minimize" class="minimize-btn">
+          <i class="fas fa-minus"></i>
+        </button>
+        <button id="chatbot-close" title="Close" class="close-btn">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+    
+    <div class="chatbot-body">
+      <div id="chat-messages" class="chat-messages">
+        <div class="message bot-message welcome-message">
+          <div class="message-avatar">
+            <i class="fas fa-robot"></i>
+          </div>
+          <div class="message-content">
+            <p>Welcome to UET Mardan! 👋 I'm your AI Assistant. How can I help you today?</p>
+            <div class="quick-suggestions">
+              <button class="suggestion-btn" data-text="Tell me about admission process">🎓 Admissions</button>
+              <button class="suggestion-btn" data-text="What programs do you offer?">📚 Programs</button>
+              <button class="suggestion-btn" data-text="Campus facilities information">🏫 Facilities</button>
+              <button class="suggestion-btn" data-text="Contact information">📞 Contact</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="typing-indicator" class="typing-indicator hidden">
+        <div class="typing-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <span class="typing-text">Assistant is typing...</span>
+      </div>
+    </div>
+    
+    <div class="chatbot-footer">
+      <div class="voice-status hidden" id="voice-status">
+        <div class="voice-animation">
+          <div class="voice-wave"></div>
+          <div class="voice-wave"></div>
+          <div class="voice-wave"></div>
+        </div>
+        <span>Listening...</span>
+      </div>
+      
+      <div class="input-container">
+        <input type="text" id="chat-input" placeholder="Type your message or click the mic to speak..." autocomplete="off">
+        <button id="voice-input-btn" class="voice-input-btn" title="Voice Input">
+          <i class="fas fa-microphone"></i>
+        </button>
+        <button id="send-message" class="send-btn" title="Send Message">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  </div>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
@@ -263,28 +365,421 @@
       // Smooth scrolling for navigation links
       $('a[href^="#"]').on('click', function(event) {
         var target = $(this.getAttribute('href'));
-        if( target.length ) {
+        if (target.length) {
           event.preventDefault();
           $('html, body').stop().animate({
             scrollTop: target.offset().top - 80
-          }, 1000);
+          }, 700);
         }
       });
       
-      // Form submission
+      // Form submission (demo)
       $('form').on('submit', function(event) {
         event.preventDefault();
         alert('Thank you for your application! We will contact you soon.');
       });
-      
-      // Add scroll effect to navbar
-      $(window).scroll(function() {
-        if ($(window).scrollTop() > 100) {
+
+      // Back-to-top button logic with progress ring
+      const $win = $(window);
+      const $doc = $(document);
+      const $scrollTopBtn = $('#scrollTopBtn');
+
+      function handleScroll() {
+        const scrollTop = $win.scrollTop();
+        const docH = $doc.height();
+        const winH = $win.height();
+        const maxScroll = Math.max(1, docH - winH);
+        const progress = Math.min(100, Math.round((scrollTop / maxScroll) * 100));
+
+        // Update CSS variable for progress ring
+        document.documentElement.style.setProperty('--scroll', progress + '%');
+
+        // Toggle visibility of the button
+        if (scrollTop > 300) {
+          $scrollTopBtn.addClass('show');
+        } else {
+          $scrollTopBtn.removeClass('show');
+        }
+
+        // Existing navbar scroll effect
+        if (scrollTop > 100) {
           $('nav').addClass('scrolled');
         } else {
           $('nav').removeClass('scrolled');
         }
+      }
+
+      // Initial invoke and bind
+      handleScroll();
+      $win.on('scroll', handleScroll);
+
+      // Scroll to top on click
+      $scrollTopBtn.on('click', function() {
+        $('html, body').animate({ scrollTop: 0 }, 700, 'swing');
       });
+
+      // ============= AI CHATBOT FUNCTIONALITY =============
+      
+      // Chatbot state variables
+      let isRecording = false;
+      let recognition = null;
+      let synthesis = window.speechSynthesis;
+      let chatHistory = [];
+      let isTyping = false;
+      let voiceEnabled = false;
+      
+      // Initialize Speech Recognition
+      if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = 'en-US';
+      }
+      
+      // UET Mardan Knowledge Base
+      const knowledgeBase = {
+        // Admission related questions
+        admission: {
+          keywords: ['admission', 'apply', 'application', 'entry', 'enrollment', 'join', 'deadline', 'fee', 'merit'],
+          responses: [
+            {
+              trigger: ['admission process', 'how to apply', 'application process'],
+              answer: "📋 **UET Mardan Admission Process:**\n\n✅ **Step 1:** Fill online application form\n✅ **Step 2:** Submit required documents\n✅ **Step 3:** Pay application fee (Rs. 2,000)\n✅ **Step 4:** Appear in entry test\n✅ **Step 5:** Merit list announcement\n\n📅 **Deadline:** March 15, 2024\n📞 **Contact:** +92-937-9230295",
+              suggestions: ['Entry test details', 'Required documents', 'Fee structure']
+            },
+            {
+              trigger: ['deadline', 'last date'],
+              answer: "⏰ **Important Dates:**\n\n📅 **Application Deadline:** March 15, 2024\n📅 **Entry Test:** April 10-12, 2024\n📅 **Merit List:** April 20, 2024\n📅 **Admission Confirmation:** April 25, 2024\n\n⚠️ Don't miss the deadline! Apply now.",
+              suggestions: ['Application form', 'Entry test preparation', 'Merit criteria']
+            },
+            {
+              trigger: ['fee structure', 'fees', 'cost', 'tuition'],
+              answer: "💰 **UET Mardan Fee Structure (Per Semester):**\n\n🎓 **Undergraduate Programs:**\n• Local Students: Rs. 45,000\n• Self-Finance: Rs. 85,000\n\n📚 **Additional Charges:**\n• Admission Fee: Rs. 15,000 (One-time)\n• Security Deposit: Rs. 5,000\n• Lab Fee: Rs. 3,000\n\n💳 Payment can be made online or via bank challan.",
+              suggestions: ['Scholarship info', 'Payment methods', 'Fee concessions']
+            }
+          ]
+        },
+        
+        // Academic programs
+        programs: {
+          keywords: ['program', 'course', 'degree', 'major', 'engineering', 'computer', 'civil', 'electrical', 'mechanical', 'software', 'ai'],
+          responses: [
+            {
+              trigger: ['programs', 'courses', 'what programs', 'degrees offered'],
+              answer: "🎓 **UET Mardan Engineering Programs:**\n\n💻 **Computer Science** (4 Years)\n🔧 **Software Engineering** (4 Years)\n🏗️ **Civil Engineering** (4 Years)\n⚡ **Electrical Engineering** (4 Years)\n🔩 **Mechanical Engineering** (4 Years)\n🧠 **Artificial Intelligence** (4 Years)\n\nAll programs are **HEC recognized** and **PEC accredited**!",
+              suggestions: ['Computer Science details', 'Civil Engineering info', 'AI program']
+            },
+            {
+              trigger: ['computer science', 'cs program'],
+              answer: "💻 **Computer Science Program:**\n\n📚 **Duration:** 4 Years (8 Semesters)\n🎓 **Degree:** BS Computer Science\n\n**📖 Core Subjects:**\n• Programming Fundamentals\n• Data Structures & Algorithms\n• Software Engineering\n• Database Systems\n• Web Development\n• Mobile App Development\n• Machine Learning\n\n**💼 Career Prospects:** Software Developer, Data Scientist, Web Developer, System Analyst",
+              suggestions: ['Admission requirements', 'Lab facilities', 'Faculty info']
+            },
+            {
+              trigger: ['civil engineering', 'construction'],
+              answer: "🏗️ **Civil Engineering Program:**\n\n📚 **Duration:** 4 Years (8 Semesters)\n🎓 **Degree:** BS Civil Engineering\n\n**📖 Core Subjects:**\n• Structural Engineering\n• Construction Management\n• Surveying & Mapping\n• Highway Engineering\n• Water Resources Engineering\n• Geotechnical Engineering\n\n**💼 Career Prospects:** Structural Engineer, Project Manager, Construction Supervisor, Urban Planner",
+              suggestions: ['Lab facilities', 'Industrial visits', 'Faculty expertise']
+            }
+          ]
+        },
+        
+        // Campus facilities
+        facilities: {
+          keywords: ['facilities', 'campus', 'library', 'lab', 'hostel', 'transport', 'sports'],
+          responses: [
+            {
+              trigger: ['campus facilities', 'facilities', 'infrastructure'],
+              answer: "🏫 **UET Mardan Campus Facilities:**\n\n📚 **Central Library** - 50,000+ books\n🔬 **Modern Laboratories** - Well-equipped\n🏠 **Hostel Accommodation** - Boys & Girls\n🚌 **Transport Service** - Multiple routes\n⚽ **Sports Complex** - Cricket, Football, Tennis\n🍽️ **Cafeteria** - Hygienic food\n🏥 **Medical Center** - First aid & emergency\n💻 **WiFi Campus** - High-speed internet\n\n**All facilities are world-class!**",
+              suggestions: ['Library timing', 'Hostel fees', 'Sports activities']
+            },
+            {
+              trigger: ['library', 'books'],
+              answer: "📚 **UET Mardan Central Library:**\n\n📖 **Collection:** 50,000+ books & journals\n💻 **Digital Resources:** Online databases\n🪑 **Seating:** 300 students capacity\n⏰ **Timing:** 8:00 AM - 10:00 PM\n❄️ **Environment:** Air-conditioned\n📱 **Services:** Book reservation, renewal\n\n**Access to international research papers available!**",
+              suggestions: ['Library membership', 'Study areas', 'Research facilities']
+            }
+          ]
+        },
+        
+        // Contact and general info
+        contact: {
+          keywords: ['contact', 'phone', 'address', 'location', 'email', 'visit'],
+          responses: [
+            {
+              trigger: ['contact', 'phone number', 'address'],
+              answer: "📞 **Contact Information:**\n\n📱 **Phone Numbers:**\n• +92-937-9230295\n• +92-937-9230296\n\n📧 **Email:** info@uetmardan.edu.pk\n🌐 **Website:** www.uetmardan.edu.pk\n\n📍 **Address:**\nUniversity of Engineering & Technology\nCharsadda Road, 23200\nMardan, Khyber Pakhtunkhwa\nPakistan\n\n🕒 **Office Hours:** 8:00 AM - 4:00 PM (Mon-Fri)",
+              suggestions: ['Visit campus', 'Admission office', 'Department contacts']
+            }
+          ]
+        },
+        
+        // Scholarships
+        scholarships: {
+          keywords: ['scholarship', 'financial aid', 'merit', 'need based'],
+          responses: [
+            {
+              trigger: ['scholarship', 'financial aid'],
+              answer: "🎓 **Scholarship Opportunities:**\n\n💰 **Merit-based Scholarships:**\n• Top 3 positions: 100% tuition waiver\n• Position 4-10: 50% tuition waiver\n• Position 11-20: 25% tuition waiver\n\n🤝 **Need-based Scholarships:**\n• Up to 75% fee concession\n• For economically disadvantaged students\n\n🏆 **Special Scholarships:**\n• Sports scholarships available\n• Minority scholarships\n• Female student incentives\n\n**Apply early for better chances!**",
+              suggestions: ['Application process', 'Eligibility criteria', 'Required documents']
+            }
+          ]
+        }
+      };
+      
+      // Greeting responses
+      const greetings = [
+        {
+          triggers: ['hello', 'hi', 'hey', 'good morning', 'good afternoon', 'good evening'],
+          responses: [
+            "Hello! 👋 Welcome to UET Mardan. I'm your AI assistant. How can I help you today?",
+            "Hi there! 😊 I'm here to help with any questions about UET Mardan. What would you like to know?",
+            "Greetings! 🎓 I'm the UET Mardan AI assistant. Feel free to ask about admissions, programs, or facilities!"
+          ]
+        }
+      ];
+      
+      // Default responses for unknown queries
+      const defaultResponses = [
+        "I'd be happy to help! Could you please rephrase your question or ask about admissions, programs, facilities, or contact information?",
+        "I'm not sure I understand. Try asking about UET Mardan's programs, admission process, campus facilities, or scholarships.",
+        "Let me help you better! You can ask about admissions, engineering programs, campus life, or how to contact us."
+      ];
+      
+      // Chatbot event handlers
+      $('#chatbot-toggle').on('click', function() {
+        $('#chatbot-container').removeClass('chatbot-hidden').addClass('chatbot-visible');
+        $(this).hide();
+      });
+      
+      $('#chatbot-close').on('click', function() {
+        $('#chatbot-container').removeClass('chatbot-visible').addClass('chatbot-hidden');
+        setTimeout(() => {
+          $('#chatbot-container').addClass('chatbot-hidden');
+          $('#chatbot-toggle').show();
+        }, 300);
+      });
+      
+      $('#chatbot-minimize').on('click', function() {
+        $('#chatbot-container').toggleClass('chatbot-minimized');
+      });
+      
+      // Voice toggle functionality
+      $('#voice-toggle').on('click', function() {
+        voiceEnabled = !voiceEnabled;
+        $(this).toggleClass('active');
+        
+        if (voiceEnabled) {
+          addMessage('bot', '🎙️ Voice mode enabled! I can now speak responses aloud.', []);
+        } else {
+          addMessage('bot', '🔇 Voice mode disabled.', []);
+        }
+      });
+      
+      // Call button functionality
+      $('#call-btn').on('click', function() {
+        const $btn = $(this);
+        $btn.addClass('calling');
+        
+        addMessage('bot', '📞 **Call Request Initiated**\n\nThank you for your interest! Our admissions team will contact you shortly.\n\n**Expected call time:** Within 2-4 hours during office hours (8 AM - 4 PM)\n\n**Alternative:** You can also call us directly at +92-937-9230295', 
+          ['Admission info', 'Programs offered', 'Visit campus']);
+        
+        setTimeout(() => {
+          $btn.removeClass('calling');
+          addMessage('bot', '✅ Your call request has been logged. Reference ID: #UET' + Date.now().toString().slice(-6), []);
+        }, 3000);
+      });
+      
+      // Voice input functionality
+      $('#voice-input-btn').on('click', function() {
+        if (!recognition) {
+          addMessage('bot', '❌ Voice recognition is not supported in your browser. Please type your message.', []);
+          return;
+        }
+        
+        if (isRecording) {
+          recognition.stop();
+          return;
+        }
+        
+        startVoiceRecognition();
+      });
+      
+      // Message input handlers
+      $('#send-message').on('click', sendMessage);
+      
+      $('#chat-input').on('keypress', function(e) {
+        if (e.which === 13) {
+          sendMessage();
+        }
+      });
+      
+      // Quick suggestion handlers
+      $(document).on('click', '.suggestion-btn', function() {
+        const text = $(this).data('text');
+        $('#chat-input').val(text);
+        sendMessage();
+      });
+      
+      // Core chatbot functions
+      function startVoiceRecognition() {
+        isRecording = true;
+        $('#voice-input-btn').addClass('recording');
+        $('#voice-status').removeClass('hidden');
+        
+        recognition.onstart = () => {
+          console.log('Voice recognition started');
+        };
+        
+        recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          $('#chat-input').val(transcript);
+          sendMessage();
+        };
+        
+        recognition.onerror = (event) => {
+          console.error('Speech recognition error:', event.error);
+          addMessage('bot', '❌ Voice recognition error. Please try again or type your message.', []);
+        };
+        
+        recognition.onend = () => {
+          isRecording = false;
+          $('#voice-input-btn').removeClass('recording');
+          $('#voice-status').addClass('hidden');
+        };
+        
+        recognition.start();
+      }
+      
+      function sendMessage() {
+        const message = $('#chat-input').val().trim();
+        if (!message) return;
+        
+        // Add user message
+        addMessage('user', message, []);
+        $('#chat-input').val('');
+        
+        // Show typing indicator
+        showTyping();
+        
+        // Process message and respond
+        setTimeout(() => {
+          const response = processMessage(message);
+          hideTyping();
+          addMessage('bot', response.text, response.suggestions);
+          
+          if (voiceEnabled && response.text) {
+            speakText(response.text.replace(/\*\*/g, '').replace(/[🎓📚💻🏗️⚡🔩🧠📋✅📅📞💰🎯📖🏫🔬]/g, ''));
+          }
+        }, Math.random() * 1000 + 500);
+      }
+      
+      function processMessage(message) {
+        const lowerMessage = message.toLowerCase();
+        chatHistory.push({ type: 'user', text: message, timestamp: Date.now() });
+        
+        // Check for greetings
+        for (const greeting of greetings) {
+          if (greeting.triggers.some(trigger => lowerMessage.includes(trigger))) {
+            const response = greeting.responses[Math.floor(Math.random() * greeting.responses.length)];
+            return {
+              text: response,
+              suggestions: ['Tell me about programs', 'Admission process', 'Campus facilities', 'Contact info']
+            };
+          }
+        }
+        
+        // Search knowledge base
+        for (const [category, data] of Object.entries(knowledgeBase)) {
+          // Check if message contains category keywords
+          const hasKeyword = data.keywords.some(keyword => lowerMessage.includes(keyword));
+          
+          if (hasKeyword) {
+            // Find specific response based on triggers
+            for (const response of data.responses) {
+              if (response.trigger.some(trigger => lowerMessage.includes(trigger))) {
+                return {
+                  text: response.answer,
+                  suggestions: response.suggestions || []
+                };
+              }
+            }
+            
+            // Return first response if no specific trigger matches
+            return {
+              text: data.responses[0].answer,
+              suggestions: data.responses[0].suggestions || []
+            };
+          }
+        }
+        
+        // Default response
+        return {
+          text: defaultResponses[Math.floor(Math.random() * defaultResponses.length)],
+          suggestions: ['Admission process', 'Programs offered', 'Campus facilities', 'Contact us']
+        };
+      }
+      
+      function addMessage(type, text, suggestions) {
+        const messageClass = type === 'user' ? 'user-message' : 'bot-message';
+        const avatar = type === 'user' ? '<i class="fas fa-user"></i>' : '<i class="fas fa-robot"></i>';
+        
+        let suggestionsHtml = '';
+        if (suggestions && suggestions.length > 0) {
+          suggestionsHtml = '<div class="quick-suggestions">';
+          suggestions.forEach(suggestion => {
+            suggestionsHtml += `<button class="suggestion-btn" data-text="${suggestion}">${suggestion}</button>`;
+          });
+          suggestionsHtml += '</div>';
+        }
+        
+        const messageHtml = `
+          <div class="message ${messageClass}">
+            <div class="message-avatar">${avatar}</div>
+            <div class="message-content">
+              <p>${text.replace(/\n/g, '<br>')}</p>
+              ${suggestionsHtml}
+            </div>
+          </div>
+        `;
+        
+        $('#chat-messages').append(messageHtml);
+        scrollToBottom();
+        
+        // Store in chat history
+        chatHistory.push({ type, text, timestamp: Date.now() });
+      }
+      
+      function showTyping() {
+        if (isTyping) return;
+        isTyping = true;
+        $('#typing-indicator').removeClass('hidden');
+        scrollToBottom();
+      }
+      
+      function hideTyping() {
+        isTyping = false;
+        $('#typing-indicator').addClass('hidden');
+      }
+      
+      function scrollToBottom() {
+        const chatMessages = $('#chat-messages');
+        chatMessages.scrollTop(chatMessages[0].scrollHeight);
+      }
+      
+      function speakText(text) {
+        if (!synthesis) return;
+        
+        synthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 0.9;
+        utterance.pitch = 1;
+        utterance.volume = 0.8;
+        
+        synthesis.speak(utterance);
+      }
+      
+      // Initialize chatbot
+      console.log('🤖 UET Mardan AI Chatbot initialized successfully!');
+      
     });
 </script>
 </body>
