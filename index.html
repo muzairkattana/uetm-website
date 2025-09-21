@@ -31,10 +31,36 @@
         <li><a href="#features">About</a></li>
         <li><a href="#course">Programs</a></li>
         <li><a href="#registration">Admissions</a></li>
+        <li><a href="#" id="pages-btn">Pages</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </div>
   </nav>
+  
+  <!-- Pages Overlay (blurry slide bar) -->
+  <div id="pages-overlay" class="pages-overlay" aria-hidden="true">
+    <div class="pages-panel" role="dialog" aria-modal="true" aria-labelledby="pages-title">
+      <button id="pages-close" class="pages-close" aria-label="Close pages menu">
+        <i class="fas fa-times"></i>
+      </button>
+      <h3 id="pages-title">Quick Pages</h3>
+      <p class="pages-subtitle">Explore sections (clickable demo, no navigation)</p>
+      <div class="pages-grid">
+        <a href="#" class="page-link">Home</a>
+        <a href="#" class="page-link">About</a>
+        <a href="#" class="page-link">Programs</a>
+        <a href="#" class="page-link">Admissions</a>
+        <a href="#" class="page-link">Departments</a>
+        <a href="#" class="page-link">Research</a>
+        <a href="#" class="page-link">News</a>
+        <a href="#" class="page-link">Events</a>
+        <a href="#" class="page-link">Library</a>
+        <a href="#" class="page-link">Alumni</a>
+        <a href="#" class="page-link">Careers</a>
+        <a href="#" class="page-link">Contact</a>
+      </div>
+    </div>
+  </div>
   
   <!-- Hero -->
   <section id="home">
@@ -146,6 +172,25 @@
           <span class="degree">BS Degree</span>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- Campus Map -->
+  <section id="campus-map">
+    <h1>Find Us on Google Maps</h1>
+    <p>Visit our campus at Charsadda Road, Mardan, Khyber Pakhtunkhwa, Pakistan.</p>
+    <div class="map-container">
+      <iframe title="UET Mardan Location"
+              loading="lazy"
+              allowfullscreen
+              referrerpolicy="no-referrer-when-downgrade"
+              src="https://www.google.com/maps?q=University%20of%20Engineering%20%26%20Technology%20Mardan%20Charsadda%20Road%20Mardan%20Khyber%20Pakhtunkhwa%20Pakistan&output=embed"></iframe>
+    </div>
+    <div class="map-actions">
+      <a class="blue open-maps" target="_blank" rel="noopener"
+         href="https://www.google.com/maps/search/?api=1&query=University+of+Engineering+%26+Technology+Mardan+Charsadda+Road+Mardan+Khyber+Pakhtunkhwa+Pakistan">
+        Open in Google Maps
+      </a>
     </div>
   </section>
 
@@ -838,6 +883,53 @@
             }, 1500);
           }, 5000); // Change image every 5 seconds
         }
+      }
+      
+      // ============= PAGES OVERLAY FUNCTIONALITY =============
+      
+      // Open Pages overlay when "Pages" nav item is clicked
+      $('#pages-btn').on('click', function(e) {
+        e.preventDefault();
+        $('#pages-overlay').addClass('show');
+        $('#pages-overlay').attr('aria-hidden', 'false');
+      });
+      
+      // Close Pages overlay
+      $('#pages-close').on('click', function() {
+        closePagesOverlay();
+      });
+      
+      // Close Pages overlay when clicking outside the panel
+      $('#pages-overlay').on('click', function(e) {
+        if (e.target === this) {
+          closePagesOverlay();
+        }
+      });
+      
+      // Close with Escape key
+      $(document).on('keydown', function(e) {
+        if (e.key === 'Escape' && $('#pages-overlay').hasClass('show')) {
+          closePagesOverlay();
+        }
+      });
+      
+      // Handle page link clicks (demo - no navigation)
+      $('.page-link').on('click', function(e) {
+        e.preventDefault();
+        const pageName = $(this).text();
+        
+        // Optional: Show a tooltip or message
+        $(this).append('<span class="demo-tooltip">Demo only</span>');
+        setTimeout(() => {
+          $('.demo-tooltip').remove();
+        }, 1500);
+        
+        console.log(`Clicked on ${pageName} page (demo mode)`);
+      });
+      
+      function closePagesOverlay() {
+        $('#pages-overlay').removeClass('show');
+        $('#pages-overlay').attr('aria-hidden', 'true');
       }
       
     });

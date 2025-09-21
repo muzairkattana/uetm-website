@@ -779,6 +779,176 @@ footer p {
     #scrollTopBtn { transition: none; }
 }
 
+/* ---------------- Pages Overlay (blurry slide bar) ---------------- */
+.pages-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.35);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 1100;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.pages-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+.pages-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: min(420px, 92vw);
+    height: 100%;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-left: 1px solid rgba(0,0,0,0.06);
+    box-shadow: -10px 0 30px rgba(0,0,0,0.15);
+    transform: translateX(100%);
+    transition: transform 0.35s ease;
+    padding: 22px;
+}
+.pages-overlay.show .pages-panel {
+    transform: translateX(0);
+}
+.pages-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: rgba(0,0,0,0.05);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    color: #2c3e50;
+}
+.pages-panel h3 {
+    margin-top: 10px;
+    margin-bottom: 6px;
+    font-weight: 700;
+    color: #2c3e50;
+}
+.pages-subtitle {
+    margin-bottom: 18px;
+    color: #6c757d;
+    font-size: 0.95rem;
+}
+.pages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+}
+.page-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 14px;
+    background: rgba(52, 152, 219, 0.08);
+    border: 1.5px solid rgba(52, 152, 219, 0.3);
+    color: #2980b9;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.25s ease;
+}
+.page-link:hover {
+    background: #3498db;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(52, 152, 219, 0.25);
+}
+
+.demo-tooltip {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2c3e50;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    z-index: 1000;
+    opacity: 0;
+    animation: tooltipFadeIn 0.3s ease forwards;
+}
+
+.demo-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #2c3e50;
+}
+
+@keyframes tooltipFadeIn {
+    to { opacity: 1; }
+}
+
+/* ---------------- Campus Map ---------------- */
+#campus-map {
+    padding: 80px 20px;
+    background: #fff;
+    text-align: center;
+}
+#campus-map h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 12px;
+    position: relative;
+}
+#campus-map h1::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    border-radius: 2px;
+}
+#campus-map p {
+    color: #6c757d;
+    margin: 30px auto;
+    max-width: 700px;
+}
+.map-container {
+    position: relative;
+    width: min(1100px, 92vw);
+    margin: 0 auto;
+    aspect-ratio: 16 / 9;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    border: 1px solid #eef2f7;
+}
+.map-container iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+.map-actions {
+    margin-top: 18px;
+}
+.open-maps {
+    display: inline-block;
+    padding: 12px 18px;
+    border-radius: 28px;
+    text-decoration: none;
+}
+
 /* ---------------- AI Chatbot Styling ---------------- */
 #chatbot-toggle {
     position: fixed;
